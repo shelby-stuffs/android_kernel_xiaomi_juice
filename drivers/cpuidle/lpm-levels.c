@@ -1121,6 +1121,19 @@ static int cluster_configure(struct lpm_cluster *cluster, int idx,
 	}
 
 	if (level->notify_rpm) {
+
+		/*
+		 * Print the clocks and regulators which are enabled during
+		 * system suspend.  This debug information is useful to know
+		 * which resources are enabled and preventing the system level
+		 * LPMs (XO and Vmin).
+		 */
+#ifdef CONFIG_DEBUG_FS
+		if (!from_idle) {
+			clock_debug_print_enabled();
+			regulator_debug_print_enabled();
+		}
+#endif
 		cpu = get_next_online_cpu(from_idle);
 		cpumask_copy(&cpumask, cpumask_of(cpu));
 		clear_predict_history();
@@ -1378,6 +1391,13 @@ static bool psci_enter_sleep(struct lpm_cpu *cpu, int idx, bool from_idle)
 	update_debug_pc_event(CPU_ENTER, state_id,
 			0xdeaffeed, 0xdeaffeed, from_idle);
 	stop_critical_timings();
+
+#ifdef CONFIG_DEBUG_FS
+	if (!from_idle && pm_gpio_debug_mask) {
+		msm_gpio_dump(NULL);
+		pmic_gpio_dump(NULL);
+	}
+#endif
 
 	success = !arm_cpuidle_suspend(state_id);
 
@@ -1740,8 +1760,12 @@ static int lpm_suspend_enter(suspend_state_t state)
 	 * which resources are enabled and preventing the system level
 	 * LPMs (XO and Vmin).
 	 */
-	clock_debug_print_enabled();
-	regulator_debug_print_enabled();
+#ifdef CONFIG_DEBUG_FS
+                if (!from_idle) {
+                        clock_debug_print_enabled();
+                        regulator_debug_print_enabled();
+                }
+#endif
 
 	cpu_prepare(lpm_cpu, idx, false);
 	cluster_prepare(cluster, cpumask, idx, false, 0);
