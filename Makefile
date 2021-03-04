@@ -685,6 +685,10 @@ KBUILD_CFLAGS   += $(call cc-option,-mcpu=kyro,$(call cc-option,-mcpu=cortex-a73
 KCFLAGS         += -O3 -fno-stack-protector -mcpu=cortex-a73.cortex-a53 -mtune=cortex-a73.cortex-a53 -pipe
 endif
 
+ifeq ($(cc-name),clang)
+KBUILD_CFLAGS += -march=armv8.2-a -mtune=cortex-a53 -mcpu=cortex-a53
+endif
+
 KBUILD_CFLAGS += $(call cc-ifversion, -lt, 0409, \
 			$(call cc-disable-warning,maybe-uninitialized,))
 
