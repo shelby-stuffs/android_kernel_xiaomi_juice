@@ -109,6 +109,7 @@ static ssize_t show_fw_version(struct kobject *kobj,
 
 	return ret_val;
 };
+#ifdef WLAN_POWER_DEBUG
 
 struct power_stats_priv {
 	struct power_stats_response power_stats;
@@ -242,7 +243,7 @@ cleanup:
 	hdd_exit();
 	return ret_cnt;
 }
-
+#endif
 static ssize_t show_device_power_stats(struct kobject *kobj,
 				       struct kobj_attribute *attr,
 				       char *buf)
@@ -250,7 +251,7 @@ static ssize_t show_device_power_stats(struct kobject *kobj,
 	ssize_t ret_val;
 
 	cds_ssr_protect(__func__);
-	ret_val = __show_device_power_stats(kobj, attr, buf);
+	ret_val = show_device_power_stats(kobj, attr, buf);
 	cds_ssr_unprotect(__func__);
 
 	return ret_val;
