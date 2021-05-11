@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2015-2020, The Linux Foundation. All rights reserved.
- * Copyright (C) 2020 XiaoMi, Inc.
  */
 
 /*
@@ -153,8 +152,6 @@ bool pfk_f2fs_allow_merge_bio(const struct bio *bio1,
 		const struct bio *bio2, const struct inode *inode1,
 		const struct inode *inode2)
 {
-	bool mergeable;
-
 	/* if there is no f2fs pfk, don't disallow merging blocks */
 	if (!pfk_f2fs_is_ready())
 		return true;
@@ -162,16 +159,11 @@ bool pfk_f2fs_allow_merge_bio(const struct bio *bio1,
 	if (!inode1 || !inode2)
 		return false;
 
-	mergeable = fscrypt_is_ice_encryption_info_equal(inode1, inode2);
-	if (!mergeable)
-		return false;
-
-
-	/* ICE allows only consecutive iv_key stream. */
 	if (!bio_dun(bio1) && !bio_dun(bio2))
 		return true;
 	else if (!bio_dun(bio1) || !bio_dun(bio2))
 		return false;
 
-	return bio_end_dun(bio1) == bio_dun(bio2);
+	return fscrypt_enc_bio_mergeable(bio1, bio_sectors(bio1),
+					 bio_dun(bio2));
 }
