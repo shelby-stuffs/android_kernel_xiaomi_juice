@@ -1965,6 +1965,7 @@ int cam_sensor_core_power_up(struct cam_sensor_power_ctrl_t *ctrl,
 		case SENSOR_STANDBY:
 		case SENSOR_CUSTOM_GPIO1:
 		case SENSOR_CUSTOM_GPIO2:
+		case SENSOR_VAF:
 			if (no_gpio) {
 				CAM_ERR(CAM_SENSOR, "request gpio failed");
 				goto power_up_failed;
@@ -1990,7 +1991,6 @@ int cam_sensor_core_power_up(struct cam_sensor_power_ctrl_t *ctrl,
 		case SENSOR_VANA:
 		case SENSOR_VDIG:
 		case SENSOR_VIO:
-		case SENSOR_VAF:
 		case SENSOR_VAF_PWDM:
 		case SENSOR_CUSTOM_REG1:
 		case SENSOR_CUSTOM_REG2:
@@ -2094,6 +2094,7 @@ power_up_failed:
 		case SENSOR_STANDBY:
 		case SENSOR_CUSTOM_GPIO1:
 		case SENSOR_CUSTOM_GPIO2:
+		case SENSOR_VAF:
 			if (!gpio_num_info)
 				continue;
 			if (!gpio_num_info->valid
@@ -2106,7 +2107,6 @@ power_up_failed:
 		case SENSOR_VANA:
 		case SENSOR_VDIG:
 		case SENSOR_VIO:
-		case SENSOR_VAF:
 		case SENSOR_VAF_PWDM:
 		case SENSOR_CUSTOM_REG1:
 		case SENSOR_CUSTOM_REG2:
@@ -2261,7 +2261,7 @@ int cam_sensor_util_power_down(struct cam_sensor_power_ctrl_t *ctrl,
 		case SENSOR_STANDBY:
 		case SENSOR_CUSTOM_GPIO1:
 		case SENSOR_CUSTOM_GPIO2:
-
+		case SENSOR_VAF:
 			if (!gpio_num_info->valid[pd->seq_type])
 				continue;
 
@@ -2274,7 +2274,6 @@ int cam_sensor_util_power_down(struct cam_sensor_power_ctrl_t *ctrl,
 		case SENSOR_VANA:
 		case SENSOR_VDIG:
 		case SENSOR_VIO:
-		case SENSOR_VAF:
 		case SENSOR_VAF_PWDM:
 		case SENSOR_CUSTOM_REG1:
 		case SENSOR_CUSTOM_REG2:
