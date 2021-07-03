@@ -419,6 +419,7 @@ static int _freq_tbl_determine_rate(struct clk_hw *hw, const struct freq_tbl *f,
 	p = clk_hw_get_parent_by_index(hw, index);
 	if (!p)
 		return -EINVAL;
+
 	if (clk_flags & CLK_SET_RATE_PARENT) {
 		rate = f->freq;
 		if (f->pre_div) {
@@ -1497,7 +1498,7 @@ const struct clk_ops clk_rcg2_shared_ops = {
 	.set_rate_and_parent = clk_rcg2_shared_set_rate_and_parent,
 	.list_registers = clk_rcg2_list_registers,
 #ifdef CONFIG_DEBUG_FS
-	.bus_vote = clk_debug_bus_vote,
+        .bus_vote = clk_debug_bus_vote,
 #endif
 };
 EXPORT_SYMBOL_GPL(clk_rcg2_shared_ops);
@@ -1797,7 +1798,7 @@ const struct clk_ops clk_rcg2_dependent_ops = {
 	.list_rate = clk_rcg2_list_rate,
 	.list_registers = clk_rcg2_list_registers,
 #ifdef CONFIG_DEBUG_FS
-	.bus_vote = clk_debug_bus_vote,
+        .bus_vote = clk_debug_bus_vote,
 #endif
 };
 EXPORT_SYMBOL(clk_rcg2_dependent_ops);
