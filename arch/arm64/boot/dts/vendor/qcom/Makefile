@@ -1,3 +1,4 @@
+ifeq (,,)
 ifeq ($(CONFIG_BUILD_ARM64_DT_OVERLAY),y)
         dtbo-$(CONFIG_ARCH_KONA) += \
                 kona-cdp-overlay.dtbo \
@@ -200,6 +201,10 @@ dtb-$(CONFIG_ARCH_SCUBA) += scuba-rumi.dtb \
 	scubalite-iot-idp-2gb.dtb \
 	scubaplite-iot-idp-2gb.dtb
 endif
+endif
+
+dtbo-y += bengal-idp-overlay.dtbo
+bengal-idp-overlay.dtbo-base := bengal.dtb
 
 always		:= $(dtb-y)
 subdir-y	:= $(dts-dirs)
