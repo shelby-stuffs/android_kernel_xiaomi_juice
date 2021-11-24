@@ -898,9 +898,12 @@ DISABLE_LTO	+= $(DISABLE_CFI)
 export CFI_CFLAGS DISABLE_CFI
 endif
 
-# Check for frame size exceeding threshold during prolog/epilog insertion.
+# Check for frame size exceeding threshold during prolog/epilog insertion
+# when using lld < 13.0.0.
 ifneq ($(CONFIG_FRAME_WARN),0)
+ifeq ($(shell test $(CONFIG_LLD_VERSION) -lt 130000; echo $$?),0)
 KBUILD_LDFLAGS	+= -plugin-opt=-warn-stack-size=$(CONFIG_FRAME_WARN)
+endif
 endif
 
 # arch Makefile may override CC so keep this after arch Makefile is included
