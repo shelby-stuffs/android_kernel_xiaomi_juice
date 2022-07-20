@@ -137,5 +137,6 @@ all.config
 # fetched Android config fragments
 kernel/configs/android-*.cfg
 
-# Folder out
+# Folder out,zips
 out/
+*.zip
