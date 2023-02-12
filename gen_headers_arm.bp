@@ -978,6 +978,10 @@ gen_headers_out_arm = [
     "asm/types.h",
     "asm/unistd.h",
 
+    // Addions missing kernel headers
+
+    "linux/st54j_se.h",
+
     // From techpack/*/include/uapi/*/**/*.h
 
     "linux/avtimer.h",
